@@ -15,7 +15,7 @@ def load_image_and_center_clip(path, size = 224):
     xx = int((img.shape[1] - short_edge) / 2)
     crop_img = img[yy: yy + short_edge, xx: xx + short_edge]
     # resize to (size, size)
-    resized_img = skimage.transform.resize(crop_img, (size, size))
+    resized_img = skimage.transform.resize(crop_img, (size, size), preserve_range=True)
     return resized_img
 
 # convert rgb to bgr image and sub the vgg mean
