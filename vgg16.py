@@ -12,7 +12,9 @@ class Vgg16:
             # TODO: Find a default path properly.
 
         self.data_dict = np.load(vgg16_npy_path, encoding='latin1').item()
+
         print("Vgg16: npy file loaded")
+        self.var_dict = {}
 
     def build_original_vgg16(self, rgb_image, name = "vgg_net"):
         bgr_image = image_tools.convert_rgb_to_bgr_for_vgg(rgb_image)
@@ -186,6 +188,15 @@ class Vgg16:
     def get_fc_biases_constant(self, name):
         return tf.constant(self.data_dict[name][1], name="biases")
 
+    def update_fc_var_dict(self, name, weights_var, biases_var):
+        self.var_dict[(name, 0)] = weights_var
+        self.var_dict[(name, 1)] = biases_var
+
+    def update_conv_var_dict(self, name, kernel_var, biases_var):
+        self.var_dict[(name, 0)] = kernel_var
+        self.var_dict[(name, 1)] = biases_var
+
+
     def get_conv_val(self, name, kernel_size, in_channels_num, out_channels_num, new_value=False):
         with tf.variable_scope(name):
             if new_value == True:
@@ -206,7 +217,7 @@ class Vgg16:
                     self.get_conv_biases_constant(name),
                     name="pretrained_biases"
                 )
-
+        self.update_conv_var_dict(name, kernel, biases)
         return kernel, biases
 
     def get_fc_val(self, name, in_data_size, out_data_size, new_value=False):
@@ -229,11 +240,23 @@ class Vgg16:
                     self.get_fc_biases_constant(name),
                     name="pretrained_biases"
                 )
-
+        self.update_fc_var_dict(name, weights, biases)
         return weights, biases
 
+    def save_var_as_npy(self, sess, path="./vgg16-save.npy"):
+        assert isinstance(sess, tf.Session)
 
+        data_dict = {}
 
+        for (name, idx), var in self.var_dict.items():
+            var_out = sess.run(var)
+            if name not in data_dict:
+                data_dict[name] = {}
+            data_dict[name][idx] = var_out
+
+        np.save(path, data_dict)
+        print("file saved", path)
+        return path
 
 if __name__ == '__main__':
 
@@ -247,7 +270,7 @@ if __name__ == '__main__':
 
     batches = np.concatenate((batch1, batch2), 0)
 
-    vgg = Vgg16("./PretrainedData/vgg16.npy")
+    vgg = Vgg16("./vgg16-save.npy")
 
     images = tf.placeholder("float", [patch_num, 224, 224, 3])
     feed_dict = {images: batches}
@@ -262,11 +285,11 @@ if __name__ == '__main__':
             per_process_gpu_memory_fraction=0.7,
             allow_growth=True)
     )
-    
+
     with tf.Session(config=sess_config) as sess:
         sess.run(tf.global_variables_initializer())
         prob = sess.run(vgg.prob, feed_dict=feed_dict)
-
+        vgg.save_var_as_npy(sess)
     print(prob)
 
     score_tools.print_prob(prob[0], './PretrainedData/synset.txt')
