@@ -16,7 +16,7 @@ class Vgg16:
         print("Vgg16: npy file loaded")
         self.var_dict = {}
 
-    def build_original_vgg16(self, rgb_image, name = "vgg_net"):
+    def build_original_vgg16(self, rgb_image, name="vgg_net"):
         bgr_image = image_tools.convert_rgb_to_bgr_for_vgg(rgb_image)
         assert bgr_image.get_shape().as_list()[1:] == [224, 224, 3]
         print("Vgg16: data checking finished.")
@@ -258,6 +258,7 @@ class Vgg16:
         print("file saved", path)
         return path
 
+
 if __name__ == '__main__':
 
     # Data input configuration
@@ -283,7 +284,8 @@ if __name__ == '__main__':
         allow_soft_placement=True,
         gpu_options=tf.GPUOptions(
             per_process_gpu_memory_fraction=0.7,
-            allow_growth=True)
+            allow_growth=True
+        )
     )
 
     with tf.Session(config=sess_config) as sess:
