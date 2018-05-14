@@ -128,7 +128,7 @@ def test_gender():
     # Data input configuration
     patch_num = 1
 
-    img1 = image_tools.load_image_and_center_clip("./TestData/33woman.jpg")
+    img1 = image_tools.load_image_and_center_clip("./TestData/20man.jpg")
     batch1 = img1.reshape((1, 224, 224, 3))
 
     vgg = Lilith_vgg(true_sex_false_age=True, vgg16_npy_path="./PretrainedData/gender_vgg16.npy")
@@ -160,7 +160,7 @@ def test_age():
     # Data input configuration
     patch_num = 1
 
-    img1 = image_tools.load_image_and_center_clip("./TestData/33woman.jpg")
+    img1 = image_tools.load_image_and_center_clip("./TestData/20man.jpg")
     batch1 = img1.reshape((1, 224, 224, 3))
 
     vgg = Lilith_vgg(true_sex_false_age=False, vgg16_npy_path="./PretrainedData/age_vgg16.npy")
@@ -198,4 +198,4 @@ def test_age():
 
 if __name__ == '__main__':
    test_gender()
-  # test_age()
+   test_age()
