@@ -119,9 +119,9 @@ class Judge_vgg(base_network.Net):
 
         fc6 = self.fc("fc6", pool5, 4096)
         fc7 = self.fc("fc7", fc6, 4096)
-        fc8_2 = self.fc("fc8_2", fc7, out_nodes=self.config.n_classes)
-
-        self.cal_loss(fc8_2, self.y)
-        self.cal_accuracy(fc8_2, self.y)
+        self.fc8_2 = self.fc("fc8_2", fc7, out_nodes=self.config.n_classes)
+        self.prob = tf.nn.softmax(self.fc8_2)
+        self.cal_loss(self.fc8_2, self.y)
+        self.cal_accuracy(self.fc8_2, self.y)
         train_op = self.optimize()
         return train_op

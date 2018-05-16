@@ -49,8 +49,8 @@ def train():
         train_image_batch, train_label_batch = train_loader.generate_batch()
         val_loader = data_loader.FaceDataLoader(data_config, is_train=False, is_shuffle=False)
         val_image_batch, val_label_batch = val_loader.generate_batch()
-
-    train_op = net.build_model()
+    with tf.device('/cpu:0'):
+        train_op = net.build_model()
     summaries = net.get_summary()
 
     saver = tf.train.Saver(tf.global_variables())
