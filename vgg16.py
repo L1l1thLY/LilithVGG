@@ -1,8 +1,8 @@
 import tensorflow as tf
 import os
 import numpy as np
-import image_tools
-import score_tools
+from image_tools import image_tools
+from score_tools import score_tools
 
 
 class Vgg16:

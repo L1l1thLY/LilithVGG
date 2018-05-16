@@ -5,4 +5,3 @@ import score_tools
 import numpy as np
 
 class Judge_vgg(vgg16.Vgg16):
-    

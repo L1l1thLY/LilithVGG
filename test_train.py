@@ -1,6 +1,6 @@
-import lilith_vgg
-import image_tools
-import score_tools
+import vgg16
+from image_tools import image_tools
+from score_tools import score_tools
 import tensorflow as tf
 
 if __name__ == '__main__':
@@ -13,7 +13,7 @@ if __name__ == '__main__':
 
     # Data input configuration
     patch_num = 1
-    vgg = lilith_vgg.Lilith_vgg("./PretrainedData/vgg16.npy")
+    vgg = vgg16.Vgg16('./PretrainedData/vgg16.npy')
     true_out = tf.placeholder(tf.float32, [1, 1000])
     images = tf.placeholder("float", [patch_num, 224, 224, 3])
 

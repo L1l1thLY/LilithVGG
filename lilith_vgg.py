@@ -1,7 +1,7 @@
 import vgg16
 import tensorflow as tf
-import image_tools
-import score_tools
+from image_tools import image_tools
+from score_tools import score_tools
 import numpy as np
 
 class Lilith_vgg(vgg16.Vgg16):
@@ -134,10 +134,10 @@ def test_gender():
     vgg = Lilith_vgg(true_sex_false_age=True, vgg16_npy_path="./PretrainedData/gender_vgg16.npy")
 
 
-    with tf.device('/cpu:0'):
-        images = tf.placeholder("float", [patch_num, 224, 224, 3])
-    # vgg.build_original_vgg16(images)
-        vgg.build(images)
+
+    images = tf.placeholder("float", [patch_num, 224, 224, 3])
+# vgg.build_original_vgg16(images)
+    vgg.build(images)
 
 
     sess_config = tf.ConfigProto(
@@ -165,10 +165,9 @@ def test_age():
 
     vgg = Lilith_vgg(true_sex_false_age=False, vgg16_npy_path="./PretrainedData/age_vgg16.npy")
 
-    with tf.device('/cpu:0'):
-        images = tf.placeholder("float", [patch_num, 224, 224, 3])
-        # vgg.build_original_vgg16(images)
-        vgg.build(images)
+    images = tf.placeholder("float", [patch_num, 224, 224, 3])
+    # vgg.build_original_vgg16(images)
+    vgg.build(images)
 
     sess_config = tf.ConfigProto(
         log_device_placement=True,
