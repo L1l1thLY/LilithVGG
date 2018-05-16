@@ -105,7 +105,7 @@ class Judge_vgg(base_network.Net):
         conv3_1 = self.conv2d("conv3_1", pool2, 256)
         conv3_2 = self.conv2d("conv3_2", conv3_1, 256)
         conv3_3 = self.conv2d("conv3_3", conv3_2, 256)
-        pool3 = self.conv2d("pool3", conv3_3)
+        pool3 = self.max_pool("pool3", conv3_3)
 
         conv4_1 = self.conv2d("conv4_1", pool3, 512)
         conv4_2 = self.conv2d("conv4_2", conv4_1, 512)

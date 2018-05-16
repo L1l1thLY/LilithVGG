@@ -1,0 +1,19 @@
+TRAIN:
+  CHECKPOINT_DIR: './logs/train/'
+  MAX_TO_KEEP: 1000
+  LEARNING_RATE: 0.001
+  MAX_STEP: 100
+  IS_PRETRAIN: True
+  PRE_TRAIN_WEIGHT: './PretrainedData/gender_vgg16.npy'
+
+TEST:
+
+DATA:
+  N_CLASSES: 2
+  BATCH_SIZE: 3
+  IMAGE_SIZE:
+    WIDTH: 224
+    HEIGHT: 224
+    DEPTH: 3
+  DATA_DIR: './Data/'
+  IS_SHUFFLE: True
